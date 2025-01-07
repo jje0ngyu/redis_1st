@@ -1,10 +1,32 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: 'mysql:8.0.22'
+    container_name: mysql-container
     environment:
       - 'MYSQL_DATABASE=mydatabase'
       - 'MYSQL_PASSWORD=secret'
       - 'MYSQL_ROOT_PASSWORD=verysecret'
       - 'MYSQL_USER=myuser'
     ports:
-      - '3306'
+      - '3307:3306'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+#  app:
+#    image: your-springboot-app-image
+#    container_name: springboot-container
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase
+#      SPRING_DATASOURCE_USERNAME: myuser
+#      SPRING_DATASOURCE_PASSWORD: secret
+#    ports:
+#      - '8080:8080'
+#    depends_on:
+#      - mysql
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
